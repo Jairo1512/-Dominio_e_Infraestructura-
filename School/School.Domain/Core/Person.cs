@@ -1,8 +1,10 @@
-﻿namespace School.Domain.Core;
-
-public abstract class Person : BaseEntity
+﻿
+namespace School.Domain.Entities
 {
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
+    public class Person
+    {
+        public int PersonId { get; set; }
+        public string Name { get; set; }
+    }
 }
 

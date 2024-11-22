@@ -1,6 +1,8 @@
-﻿namespace School.Domain.Entities;
+﻿using School.Domain.Core;
 
-public class Instructor : Core.Person
+namespace School.Domain.Entities;
+
+public class Instructor : Person
 {
     public string EmployeeNumber { get; set; } = string.Empty;
 }

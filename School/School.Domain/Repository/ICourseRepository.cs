@@ -1,6 +1,14 @@
-﻿namespace School.Domain.Repository;
-
+﻿
 using School.Domain.Entities;
 
-public interface ICourseRepository : IBaseRepository<Course> { }
-
+namespace School.Domain.Repositories
+{
+    public interface ICourseRepository
+    {
+        Task<IEnumerable<Course>> GetAllCoursesAsync();
+        Task<Course> GetCourseByIdAsync(int courseId);
+        Task AddCourseAsync(Course course);
+        Task UpdateCourseAsync(Course course);
+        Task DeleteCourseAsync(int courseId);
+    }
+}

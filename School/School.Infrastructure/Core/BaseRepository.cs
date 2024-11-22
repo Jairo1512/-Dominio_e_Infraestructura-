@@ -1,48 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using School.Domain.Core;
-using School.Domain.Repository;
+using System.Linq.Expressions;
 
 namespace School.Infrastructure.Core;
 
-public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+public class BaseRepository<TEntity> where TEntity : class
 {
-    private readonly Context.SchoolContext _context;
+    protected readonly DbContext _context;
+    protected readonly DbSet<TEntity> _dbSet;
 
-    public BaseRepository(Context.SchoolContext context)
+    public BaseRepository(DbContext context)
     {
         _context = context;
+        _dbSet = _context.Set<TEntity>();
     }
 
-    public async Task<T?> GetByIdAsync(int id)
-    {
-        return await _context.Set<T>().FindAsync(id);
-    }
+    public async Task<TEntity?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
 
-    public async Task<IEnumerable<T>> GetAllAsync()
-    {
-        return await _context.Set<T>().ToListAsync();
-    }
+    public async Task<IEnumerable<TEntity>> GetAllAsync() => await _dbSet.ToListAsync();
 
-    public async Task AddAsync(T entity)
-    {
-        await _context.Set<T>().AddAsync(entity);
-        await _context.SaveChangesAsync();
-    }
+    public async Task AddAsync(TEntity entity) => await _dbSet.AddAsync(entity);
 
-    public async Task UpdateAsync(T entity)
-    {
-        _context.Set<T>().Update(entity);
-        await _context.SaveChangesAsync();
-    }
+    public void Update(TEntity entity) => _dbSet.Update(entity);
 
-    public async Task DeleteAsync(int id)
-    {
-        var entity = await GetByIdAsync(id);
-        if (entity != null)
-        {
-            _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-    }
+    public void Remove(TEntity entity) => _dbSet.Remove(entity);
+
+    public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        => await _dbSet.Where(predicate).ToListAsync();
 }
 

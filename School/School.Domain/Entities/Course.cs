@@ -1,7 +1,14 @@
-﻿namespace School.Domain.Entities;
-
-public class Course : Core.BaseEntity
+﻿
+namespace School.Domain.Entities
 {
-    public string Title { get; set; } = string.Empty;
-    public int Credits { get; set; }
+    public class Course
+    {
+        public int CourseId { get; set; }
+        public string Title { get; set; }
+        public int Credits { get; set; }
+
+        
+        public int DepartmentId { get; set; }
+        public Department Department { get; set; }
+    }
 }
